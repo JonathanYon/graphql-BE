@@ -1,4 +1,4 @@
-# A Blog Backend Project with GraphQL 
+# Event Scheduler App 
 
 ## Purpose of This Project 
 
@@ -6,7 +6,7 @@ The purpose of this project written with Typescript, GraphQL, and React is mainl
 
 1. Gain better understanding and usage of Typescript.
 
-2. Learn GraphQL by doing and have clear understanding of the difference     between GraphQL and REST API
+2. Learn GraphQL by 'doing' and have clear understanding of the difference between GraphQL and REST API
 
 ## Project Setting
 
@@ -16,12 +16,10 @@ This project tried to use [Bulletproof node.js project architecture 🛡️](htt
 
 | Directory | Description                                                  |
 | --------- | ------------------------------------------------------------ | 
-| app.ts    | App entry point                                              |
-| api       | Express route controllers for all the endpoint of the app    |
+| server.ts | server entry point                                           |
+
  
 
-
- I'm going to apply "The principle of separation of concerns" with Controller - Service Layer - Data Access Layer (3 Layer Architecture).
 
  ### Project Init
 
@@ -95,8 +93,8 @@ When run Apollo-Server with the command below, You can see "Apollo Server ready 
 
 ```bash
 $node .
-$node index.js
+$node server.js
 ```
 
-After that, implement the following code in your index.js file.
+After that, implement the following code in your server.js file.
 
