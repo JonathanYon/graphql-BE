@@ -4,7 +4,7 @@ import { AuthenticationError } from 'apollo-server-express';
 import { UserModel } from "../../models/users";
 import passwordValidate from "../../utils/passwordValidate";
 import { newToken } from '../../utils/token';
-import { UserInput } from '../../typings';
+import { FullUserInput, UserInput } from '../../typings';
 import AuthMiddleware from '../../utils/auth';
 
 
@@ -17,7 +17,6 @@ export const userResolvers = {
           throw new AuthenticationError(`Unauthorized User!`)
         }
         const Founduser = await UserModel.findById(id)
-        console.log('getUser--->', user._id.toString(), Founduser?._id.toString());
         if(Founduser){
           if(user._id.toString() === Founduser?._id.toString()){
             return Founduser
@@ -95,7 +94,38 @@ export const userResolvers = {
             console.log(err);
           }
         },
+      saveFullUserInfo: async (_: any, {user}: FullUserInput, ctx: any)=>{
+        try {
+          const authUser = await AuthMiddleware(ctx)
+        if(!authUser){
+          throw new AuthenticationError(`Unauthorized User!`)
+        }
         
+        const Founduser = await UserModel.findById(user._id)
+        console.log("user=-->", Founduser?._id, authUser._id)
+        if(Founduser){
+          if(authUser._id.toString() === Founduser?._id.toString()){
+            const userUpdate = await UserModel.findByIdAndUpdate(Founduser._id, {
+              _id: Founduser._id,
+              username: Founduser.username,
+              firstName: user._id,
+              lastName: user.lastName,
+              email: user.email,
+              phoneNumber: user.phoneNumber,
+              bio: user.bio
+            })
+            return userUpdate
+          } else {
+            throw new AuthenticationError(`Unauthorized User!!`)
+          }
+
+        } else {
+          throw new AuthenticationError(`${user._id} not Found`)
+        } 
+        } catch (err) {
+          console.log(err)
+        }
+      },  
       },
     };
     
