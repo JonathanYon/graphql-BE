@@ -8,12 +8,14 @@ const AuthMiddleware = async (context: any) => {
       const authHeaders = context.req.headers.authorization;
       if (authHeaders) {
           const token = authHeaders.split("Bearer ")[1];
-          // console.log("Token---", token);
-        const decode = await verifyToken(token);
-          // const decode = jwt.verify(token, process.env.SECRET)
+          const decode = await verifyToken(token);
+          console.log("decode---", decode._id);
+          // const decode: Decoded = jwt.verify(token, constant.JWT_SECRET)
           const user = await UserModel.findById(decode._id);
-          // console.log("decode---", user);
+          
+
         if (user) {
+          // console.log("decode--->", user);
           return user;
         } else {
           throw new AuthenticationError("Invalid/Expired Token");

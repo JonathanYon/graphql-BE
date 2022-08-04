@@ -7,10 +7,10 @@ type Decoded = {
     _id: string
 }
 
-export const newToken = (user: IUser) => {
+export const newToken =  (user: IUser) => {
     return jwt.sign(
         {
-          id: user._id,
+          _id: user._id,
           username: user.username,
         },
         constant.JWT_SECRET,
@@ -18,10 +18,15 @@ export const newToken = (user: IUser) => {
       );
 }
 
-export const verifyToken = (token: string) =>
-  new Promise<Decoded>((resolve, reject) =>
+export const verifyToken = async (token: string) => {
+  return new Promise<Decoded>((resolve, reject) =>
     jwt.verify(token, constant.JWT_SECRET, (err, decodedToken) => {
-      if (err) reject(err);
-      resolve(decodedToken as Decoded);
+          // console.log("decodedToken---", decodedToken);
+      if (err) {
+        reject(err);
+      } else {
+        resolve(decodedToken as Decoded);
+      }
     })
   );
+};
