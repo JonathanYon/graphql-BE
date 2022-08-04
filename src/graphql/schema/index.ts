@@ -39,7 +39,6 @@ const typeDefs = gql`
 
   input FullUserInput {
     _id: String!
-    username: String!
     firstName: String
     lastName: String
     email: String
@@ -49,11 +48,11 @@ const typeDefs = gql`
 
   type Query {
     """
-    register with input of (RegisterInput object) for registering users
+    get user only if user is looking their own info
     """
     getUser(id: ID!): FullUser!
     """
-    register with input of (RegisterInput object) for registering users
+    login with username and password input
     """
     logIn(username: String!, password: String!): Auth!
   
@@ -64,11 +63,6 @@ const typeDefs = gql`
     register with input of (RegisterInput object) for registering users
     """
     signUp(userSignUpInput: SignUpInput!): Auth!
-    # """
-    # register with input of (RegisterInput object) for registering users
-    # """
-    # logIn(loginInput: LoginInput!): Auth!
-    
     """
     Updating registered user with their full info (FullUserInput)
     """

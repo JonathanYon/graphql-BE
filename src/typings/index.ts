@@ -11,6 +11,9 @@ export interface IUser {
   bio: string;
   createdEvent: Types.ObjectId[];
 }
+export interface FullUserInput {
+    user: Omit<IUser, 'username' | 'password' | 'createdEvent'>
+}
 
 export interface IEvents {
   id?: string;
