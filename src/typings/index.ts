@@ -46,4 +46,12 @@ export interface PageFilter {
     pageSize: number
   }
 }
+export interface EventFilters {
+  pageFilters: {id: string
+    searchInput: string
+    pagePagination: number
+    pageSize: number
+  currentEvents: boolean
+  expiredEvents: boolean}
+}
 
