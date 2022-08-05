@@ -84,12 +84,28 @@ const typeDefs = gql`
     pagePagination: Int
     pageSize: Int
   }
+  input AllEventsInput {
+    id: String!
+    searchInput: String
+    pagePagination: Int
+    pageSize: Int
+    currentEvents: Boolean
+    expiredEvents: Boolean
+  }
 
   type Query {
     """
     get user only if user is looking their own info
     """
     getUser(id: ID!): FullUser!
+    """
+    get single event of a user
+    """
+    getEvent(id: String!): FullEvent!
+    """
+    get single event of a user
+    """
+    allEvents(events: AllEventsInput!): Events!
     """
     get user's all Event
     """
