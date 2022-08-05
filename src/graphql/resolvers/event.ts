@@ -52,9 +52,34 @@ export const eventResolvers = {
         console.log(err);
                 }
     },
+    getEvent: async (_: any, { id }: { id: string }, ctx: any) => {
+      try {
+        const user = await AuthMiddleware(ctx);
+        if (!user) {
+          throw new AuthenticationError("Unauthenticated");
+        }
+
+        const userEvent = await EventModel.findOne({
+          _id: id,
+          createdBy: user._id,
+        });
+        if (!userEvent) {
+          throw new AuthenticationError("Unauthenticated");
+        }
+        return {
+          _id: userEvent._id,
+          title: userEvent.title,
+          start: userEvent.start,
+          end: userEvent.end,
+          url: userEvent.url,
+          description: userEvent.description,
+          isPrivate: userEvent.isPrivate,
+          createdBy: userEvent.createdBy,
+        };
             } catch (err) {
-                console.log(err)
+        console.log(err);
             }
+    },
         }
     },
     Mutation: {
