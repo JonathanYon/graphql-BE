@@ -80,7 +80,53 @@ export const eventResolvers = {
         console.log(err);
             }
     },
+    allEvents: async (
+      _: any,
+      {
+        pageFilters: {
+          id,
+          searchInput = "",
+          pagePagination = 0,
+          pageSize = 0,
+          currentEvents,
+          expiredEvents,
+        },
+      }: EventFilters,
+      ctx: any
+    ) => {
+      try {
+        const user = await AuthMiddleware(ctx);
+        if (!user) {
+          throw new AuthenticationError("Unauthenticated");
         }
+        const filter = user._id
+          ? { $or: [{ createdBy: user._id }, { isPrivate: false }] }
+          : { isPrivate: false };
+        const regexFilter = {
+          ...filter,
+          title: { $regex: searchInput, $options: "six" },
+        };
+
+        const statusFilter = currentEvents
+          ? { end: { $gte: new Date().toISOString() } }
+          : expiredEvents
+          ? { end: { $lt: new Date().toISOString() } }
+          : {};
+
+          const allEvents = await EventModel.find({ ...regexFilter, ...statusFilter })
+        .sort({ end: -1 })
+        .limit(pageSize)
+        .skip(pagePagination > 0 ? (pagePagination - 1) * pageSize : 0)
+
+        const totalCount = await EventModel.count()
+        return {
+            totalCount,
+            events: allEvents
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
     },
     Mutation: {
         createEvent: async(_: any, {event}: CreateEvent, ctx:any): Promise<{id: string} | undefined> => {
