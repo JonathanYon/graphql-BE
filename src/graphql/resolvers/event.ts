@@ -2,11 +2,51 @@ import { AuthenticationError } from "apollo-server-express";
 import { constant } from "../../config/constant";
 
 import { EventModel } from "../../models/events";
-import { CreateEvent } from "../../typings"
+import { CreateEvent, PageFilter } from "../../typings"
 import AuthMiddleware from "../../utils/auth"
 
 export const eventResolvers = {
-    
+    Query: {
+        getUserEvents: async (_:any, {pageFilter: {id, searchInput = '', pagePagination=0, pageSize=0} }:PageFilter, ctx: any) => {
+            try {
+                const user = await AuthMiddleware(ctx)
+                if(!user){
+                    throw new AuthenticationError('Unauthenticated');
+                }
+                if(!id || id !== user._id.toString()){
+                    throw new AuthenticationError('Unauthenticated!!');
+                }
+                const filter = {
+                    createdBy: user._id,
+                    $or: [
+                      {title: {$regex: searchInput, $options: 'six'}},
+                      {description: {$regex: searchInput, $options: 'six'}}
+                    ]  
+                  }
+                  const userEvents1 = await EventModel.find( {
+                    createdBy: user._id,
+                    $or: [
+                        {title: {$regex: searchInput, $options: 'six'}},
+                        {description: {$regex: searchInput, $options: 'six'}}
+                      ] 
+                  })
+                const userEvents = await EventModel.find(filter)
+                .limit(pageSize)
+                .skip(pagePagination > 0 ? (pagePagination - 1) * pageSize : 0)
+                // .populate('createdBy')
+
+                const totalCount:number = await EventModel.find(filter).count() 
+                console.log("userEvent1--->", totalCount)
+                // console.log("userEvents---=", userEvents)
+                return {
+                    totalCount,
+                    events: userEvents
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+    },
     Mutation: {
         createEvent: async(_: any, {event}: CreateEvent, ctx:any): Promise<{id: string} | undefined> => {
             try {
