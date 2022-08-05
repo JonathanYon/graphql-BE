@@ -2,8 +2,13 @@ import { gql } from 'apollo-server'
 
 const typeDefs = gql`
 
-type Event {
+  type Event {
     id: String!
+  }
+
+  type Events {
+    totalCount: Int
+    events: [FullEvent]
   }
 
   type Auth {
@@ -73,11 +78,22 @@ type Event {
     isPrivate: Boolean
   }
 
+  input EventFilter {
+    id: String!
+    searchInput: String
+    pagePagination: Int
+    pageSize: Int
+  }
+
   type Query {
     """
     get user only if user is looking their own info
     """
     getUser(id: ID!): FullUser!
+    """
+    get user's all Event
+    """
+    getUserEvents( pageFilter: EventFilter): Events!
     """
     login with username and password input
     """
