@@ -1,3 +1,4 @@
+import { eventResolvers } from "./event";
 import { userResolvers } from "./user";
 
 const resolvers = {
@@ -5,7 +6,8 @@ const resolvers = {
         ...userResolvers.Query
     },
     Mutation: {
-        ...userResolvers.Mutation
+        ...userResolvers.Mutation,
+        ...eventResolvers.Mutation
     }
 }
 

@@ -26,6 +26,10 @@ export interface IEvents {
   createdBy: Types.ObjectId;
 }
 
+export interface CreateEvent {
+  event: Omit<IEvents, 'url' | 'createdBy'>
+}
+
 export type UserInput = {
   userSignUpInput: {
     username: string;

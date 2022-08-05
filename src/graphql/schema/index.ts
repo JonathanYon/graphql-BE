@@ -2,9 +2,8 @@ import { gql } from 'apollo-server'
 
 const typeDefs = gql`
 
-  type User {
-    _id: ID!
-    username: String
+type Event {
+    id: String!
   }
 
   type Auth {
@@ -12,6 +11,17 @@ const typeDefs = gql`
     token: String!
     tokenExpire: Int!
     username: String!
+  }
+
+  type FullEvent {
+    _id: String
+    title: String!
+    start: String!
+    end: String!
+    url: String
+    description: String!
+    isPrivate: Boolean!
+    createdBy: String
   }
 
     type FullUser {
@@ -46,6 +56,23 @@ const typeDefs = gql`
     bio: String
   }
 
+  input EventInput {
+    title: String!
+    start: String!
+    end: String!
+    description: String!
+    isPrivate: Boolean!
+  }
+
+  input EventInputToUpdate {
+    id: String
+    title: String
+    start: String
+    end: String
+    description: String
+    isPrivate: Boolean
+  }
+
   type Query {
     """
     get user only if user is looking their own info
@@ -67,6 +94,14 @@ const typeDefs = gql`
     Updating registered user with their full info (FullUserInput)
     """
     saveFullUserInfo(user: FullUserInput!): FullUser!
+    """
+    creating user's Event
+    """
+    createEvent(event: EventInput!): Event!
+    """
+    Updating user's Event
+    """
+    updateEvent(event: EventInputToUpdate!, id: String): FullEvent!
   }
 `
 
