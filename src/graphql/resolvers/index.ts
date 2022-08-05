@@ -3,7 +3,8 @@ import { userResolvers } from "./user";
 
 const resolvers = {
     Query: {
-        ...userResolvers.Query
+        ...userResolvers.Query,
+        ...eventResolvers.Query
     },
     Mutation: {
         ...userResolvers.Mutation,

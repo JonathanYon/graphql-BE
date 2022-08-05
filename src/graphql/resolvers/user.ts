@@ -83,7 +83,7 @@ export const userResolvers = {
             const token = newToken(savedUser)
             return {
               //this keys should match to the output keys in the signup mutation Auth
-              id: savedUser._id,
+              _id: savedUser._id,
               username: savedUser.username,
               tokenExpire: 60,
               token
@@ -113,7 +113,9 @@ export const userResolvers = {
               email: user.email,
               phoneNumber: user.phoneNumber,
               bio: user.bio
-            })
+            },
+            {new:true}
+            )
             return userUpdate
           } else {
             throw new AuthenticationError(`Unauthorized User!!`)

@@ -38,3 +38,12 @@ export type UserInput = {
   };
 };
 
+export interface PageFilter {
+  pageFilter: {
+    id: string
+    searchInput: string,
+    pagePagination: number
+    pageSize: number
+  }
+}
+
