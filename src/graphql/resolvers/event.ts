@@ -68,6 +68,23 @@ export const eventResolvers = {
             } catch (err) {
                 console.log(err)
             }
+        },
+        deleteEvent: async (_:any, {id}: {id:string}, ctx:any) => {
+            try {
+                const user = await AuthMiddleware(ctx)
+                if(!user){
+                    throw new AuthenticationError('Unauthenticated');
+                }
+                const userEvent = await EventModel.findOne({_id: id, createdBy: user._id})
+                if(!userEvent){
+                    throw new AuthenticationError('Unauthenticated');
+                } else {
+                    await EventModel.deleteOne({_id: id, createdBy: user._id})
+                    return true
+                }
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 }

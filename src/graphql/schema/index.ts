@@ -102,6 +102,10 @@ type Event {
     Updating user's Event
     """
     updateEvent(event: EventInputToUpdate!, id: String): FullEvent!
+    """
+    Deleting user's Event
+    """
+    deleteEvent(id: String!): Boolean!
   }
 `
 
