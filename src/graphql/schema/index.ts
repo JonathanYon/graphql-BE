@@ -119,7 +119,7 @@ const typeDefs = gql`
 
   type Mutation {
     """
-    register with input of (RegisterInput object) for registering users
+    Register with input of (RegisterInput object) for registering users
     """
     signUp(userSignUpInput: SignUpInput!): Auth!
     """
@@ -127,7 +127,7 @@ const typeDefs = gql`
     """
     saveFullUserInfo(user: FullUserInput!): FullUser!
     """
-    creating user's Event
+    Creating user's Event
     """
     createEvent(event: EventInput!): Event!
     """
