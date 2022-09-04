@@ -31,7 +31,7 @@ const startServer = async () => {
         mongoose.connection.on('connected', () => {
             console.log("🍃 Successfully connected to mongo!");
             app.listen(port, () => {
-                console.log(`server running on:  http://localhost:${port}${apolloServer.graphqlPath}`)
+                console.log(`server running on: http://localhost:${port}${apolloServer.graphqlPath}`)
             })
         })
         mongoose.connection.on("error", (err) => {
